@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface SportFieldRepository extends JpaRepository<SportField, Long> {
 
-    @Query(value = "select * from field_sport where field_sport.name like %:keyword%", nativeQuery = true)
-    List<SportField> findByKeyword(@Param("keyword") String keyword);
+    @Query(value = "select * from sport_field where sport_field.name like %:keyword% AND sport_field.user_id = :userId", nativeQuery = true)
+    List<SportField> findByKeyword(@Param("keyword") String keyword, @Param("userId") Long userId);
+
+    @Query(value = "select * from sport_field where sport_field.user_id = :userId", nativeQuery = true)
+    List<SportField> getUserSportField(@Param("userId") Long userId);
 }

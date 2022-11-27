@@ -13,11 +13,13 @@ public class SportFieldSvcImpl implements SportFieldServices {
 
     @Autowired private SportFieldRepository repository;
 
-    @Override public List<SportField> getAll()
-    {
+    @Override public List<SportField> getAll() {
         return repository.findAll();
     }
-
+    @Override
+    public List<SportField> getUserSportField(Long id) {
+        return repository.getUserSportField(id);
+    }
     @Override public void save(SportField sportField)
     {
         repository.save(sportField);
@@ -41,7 +43,7 @@ public class SportFieldSvcImpl implements SportFieldServices {
     }
 
     @Override
-    public List<SportField> search(String keyword) {
-        return repository.findByKeyword(keyword);
+    public List<SportField> search(String keyword, Long userId) {
+        return repository.findByKeyword(keyword, userId);
     }
 }

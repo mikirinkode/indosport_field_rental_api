@@ -5,7 +5,7 @@
     <title>Sport Field Management System</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
+    <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -16,15 +16,15 @@
     <form action="#" th:action="@{/save}" th:object="${sportField}"
           method="POST">
         <input type="text" th:field="*{name}" placeholder="Field Name"
-               class="form-control mb-4 col-4">
+               class="form-control mb-4 col-4 " required>
         <input type="text"
                th:field="*{description}" placeholder="Field Description"
-               class="form-control mb-4 col-4">
+               class="form-control mb-4 col-4" required>
         <input type="text"
                th:field="*{address}" placeholder="Field Address"
-               class="form-control mb-4 col-4">
+               class="form-control mb-4 col-4" required>
 
-        <button type="submit" class="btn btn-info col-2">Save</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 
     <hr>

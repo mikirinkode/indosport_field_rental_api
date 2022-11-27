@@ -1,6 +1,7 @@
 package com.example.indosport.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,12 +22,11 @@ public class User {
     @ManyToMany
     private Set<Role> roles;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<SportField> sportFields = new HashSet<>();
+
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -61,7 +61,15 @@ public class User {
         this.roles = roles;
     }
 
+    public Set<SportField> getSportFields() {
+        return sportFields;
+    }
 
+    public void setSportFields(Set<SportField> sportFields) {
+        this.sportFields = sportFields;
 
-
+        for (SportField s: sportFields){
+            s.setUser(this);
+        }
+    }
 }

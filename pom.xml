@@ -8,8 +8,8 @@
 		<version>2.2.3.RELEASE</version>
 	</parent>
 
-	<groupId>com.hellokoding.tutorials</groupId>
-	<artifactId>springboot-security-login-thymeleaf</artifactId>
+	<groupId>com.example.indosport</groupId>
+	<artifactId>indosport</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>

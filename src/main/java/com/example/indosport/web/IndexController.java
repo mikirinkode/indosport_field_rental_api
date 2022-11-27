@@ -1,16 +1,20 @@
 package com.example.indosport.web;
 
 import com.example.indosport.model.SportField;
-import com.example.indosport.service.SportFieldSvcImpl;
 import com.example.indosport.model.User;
+import com.example.indosport.repository.UserRepository;
 import com.example.indosport.service.SecurityService;
+import com.example.indosport.service.SportFieldSvcImpl;
 import com.example.indosport.service.UserService;
 import com.example.indosport.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -18,6 +22,9 @@ import java.util.List;
 public class IndexController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private SecurityService securityService;
@@ -30,7 +37,8 @@ public class IndexController {
 
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model) {
-//        model.addAttribute("allsportfields", sportFieldServiceImpl.getAll());
+        User user = userService.getLoggedUser();
+        model.addAttribute("allsportfields", sportFieldServiceImpl.getUserSportField(user.getId()));
         return "welcome";
     }
 
@@ -46,16 +54,16 @@ public class IndexController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
-        userValidator.validate(userForm, bindingResult);
+    public String registration(@ModelAttribute("userForm") User user, BindingResult bindingResult) {
+        userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
-        userService.save(userForm);
+        userService.save(user);
 
-        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+        securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
 
         return "redirect:/welcome";
     }
@@ -84,6 +92,9 @@ public class IndexController {
 
     @PostMapping("/save")
     public String saveFieldSport(@ModelAttribute("sportField") SportField sportField) {
+        User user = userService.getLoggedUser();
+        sportField.setUser(user);
+
         sportFieldServiceImpl.save(sportField);
         return "redirect:/";
     }
@@ -102,13 +113,18 @@ public class IndexController {
     }
 
     @GetMapping({"/search"})
-    public String search(Model model, String keyword){
-        System.out.println(keyword);
-        if (keyword != null){
-            List<SportField> list = sportFieldServiceImpl.search(keyword);
-            model.addAttribute("allsportfields", list);
+    public String search(Model model, String keyword) {
+        User user = userService.getLoggedUser();
+
+        if (keyword != null) {
+            List<SportField> list = sportFieldServiceImpl.search(keyword, user.getId());
+            if (list.isEmpty()) {
+                model.addAttribute("message", "Data not found.");
+            } else {
+                model.addAttribute("allsportfields", list);
+            }
         } else {
-            model.addAttribute("allsportfields", sportFieldServiceImpl.getAll());
+            model.addAttribute("allsportfields", sportFieldServiceImpl.getUserSportField(user.getId()));
         }
         return "welcome";
     }

@@ -1,9 +1,11 @@
 package com.example.indosport.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "field_sport")
+@Table(name = "sport_field")
 public class SportField {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -14,6 +16,11 @@ public class SportField {
     private String description;
 
     private String address;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private User user;
 
     public long getId() {
         return id;
@@ -45,5 +52,13 @@ public class SportField {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
