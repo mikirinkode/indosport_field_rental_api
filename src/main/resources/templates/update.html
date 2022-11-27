@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Sport Field Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container">
+    <h1>Sport Field Management System</h1>
+    <hr>
+    <h2>Update Sport Field</h2>
+
+    <form action="#" th:action="@{/save}" th:object="${sportField}"
+          method="POST">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}"/>
+
+        <input type="text" th:field="*{name}" class="form-control mb-4 col-4">
+
+        <input type="text" th:field="*{description}" class="form-control mb-4 col-4">
+
+        <input type="text" th:field="*{address}" class="form-control mb-4 col-4">
+
+        <button type="submit" class="btn btn-info col-2"> Update</button>
+    </form>
+
+    <hr>
+
+    <a th:href="@{/}"> Kembali ke Home</a>
+</div>
+</body>
+</html>
